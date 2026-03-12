@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YER App — Your Style, Your Potential</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --charcoal: #1C1C1C;
+    --gold: #C9A96E;
+    --gold-light: #E2C898;
+    --ivory: #F5F0E8;
+    --blush: #E8D5C4;
+    --muted: rgba(245,240,232,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--ivory);
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.3;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.96) 0%, transparent 100%);
+  }
+  .nav-logo {
+    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+  .nav-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    display: none;
+  }
+  .hero-watermark {
+    position: absolute;
+    right: -60px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
+    font-size: 400px;
+    font-weight: 700;
+    color: rgba(201,169,110,0.04);
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+    user-select: none;
+  }
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-label::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--ivory);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-headline em { font-style: italic; color: var(--gold); }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 28px;
+    line-height: 1.5;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+  .hero-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.9;
+    max-width: 440px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px 44px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.3); background: var(--gold-light); }
+  .hero-note { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: 1px; }
+
+  /* Phone mockup */
+  .hero-visual {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 0.6s forwards;
+  }
+  .phone-frame-accent {
+    position: absolute;
+    width: 260px; height: 520px;
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 44px;
+    top: 28px; left: 28px;
+    z-index: 1;
+  }
+  .phone-mockup {
+    width: 280px; height: 560px;
+    background: var(--charcoal);
+    border-radius: 44px;
+    border: 1px solid rgba(201,169,110,0.3);
+    position: relative;
+    box-shadow: 0 60px 120px rgba(0,0,0,0.8), inset 0 1px 0 rgba(201,169,110,0.2);
+    overflow: hidden;
+    z-index: 2;
+  }
+  .phone-notch {
+    width: 100px; height: 28px;
+    background: var(--black);
+    border-radius: 0 0 18px 18px;
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+  }
+  .phone-screen {
+    position: absolute; inset: 0;
+    padding: 48px 20px 20px;
+    background: linear-gradient(160deg, #1a1410 0%, #0d0a07 100%);
+    display: flex; flex-direction: column; gap: 12px;
+    overflow: hidden;
+  }
+  .app-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+  .app-logo-sm {
+    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
+    font-size: 18px; color: var(--gold); letter-spacing: 3px;
+  }
+  .app-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--blush)); }
+  .app-greeting { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--muted); }
+  .app-greeting strong { font-family: 'Playfair Display', serif; font-style: normal; color: var(--ivory); font-size: 16px; display: block; margin-top: 2px; }
+  .outfit-card { background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); border-radius: 16px; padding: 14px; }
+  .outfit-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .outfit-preview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .outfit-item { aspect-ratio: 1; border-radius: 8px; background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(232,213,196,0.1)); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .outfit-title { font-family: 'Playfair Display', serif; font-size: 12px; color: var(--ivory); }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.06); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); font-weight: 600; }
+  .stat-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .trend-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.3); border-radius: 20px; padding: 6px 12px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-top: 4px; width: fit-content; }
+  .trend-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s ease infinite; }
+
+  /* Divider */
+  .gold-divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0.4; }
+
+  /* SECTION LABELS */
+  .section-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+  .section-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 600; line-height: 1.1;
+    color: var(--ivory);
+    max-width: 600px; margin-bottom: 60px;
+  }
+
+  /* PROBLEM */
+  .section-problem { background: var(--charcoal); padding: 100px 60px; }
+  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .problem-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,169,110,0.1);
+    padding: 44px 36px;
+    transition: all 0.4s ease;
+    position: relative; overflow: hidden;
+  }
+  .problem-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.4s ease; }
+  .problem-card:hover { background: rgba(201,169,110,0.05); }
+  .problem-card:hover::before { transform: scaleX(1); }
+  .problem-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: rgba(201,169,110,0.12); line-height: 1; margin-bottom: 20px; }
+  .problem-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ivory); margin-bottom: 14px; }
+  .problem-body { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.8; }
+
+  /* SOLUTION */
+  .section-solution { background: var(--ivory); padding: 100px 60px; }
+  .section-solution .section-label { color: #8B6914; }
+  .section-solution .section-label::before { background: #8B6914; }
+  .section-solution .section-headline { color: var(--black); }
+  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .features-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+  .feature-item { display: flex; gap: 20px; align-items: flex-start; padding-bottom: 24px; border-bottom: 1px solid rgba(10,10,10,0.08); }
+  .feature-item:last-child { border-bottom: none; }
+  .feature-icon { width: 40px; height: 40px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; }
+  .feature-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black); margin-bottom: 6px; }
+  .feature-desc { font-size: 13px; font-weight: 300; color: rgba(10,10,10,0.6); line-height: 1.7; }
+  .phone-mockup-light { width: 260px; height: 520px; background: var(--black); border-radius: 40px; border: 1px solid rgba(201,169,110,0.4); position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.2); overflow: hidden; margin: 0 auto; }
+
+  /* QUOTE */
+  .section-quote { padding: 120px 60px; background: var(--black); text-align: center; position: relative; overflow: hidden; }
+  .quote-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 56px); font-style: italic; font-weight: 300; color: var(--ivory); line-height: 1.3; max-width: 800px; margin: 0 auto 32px; position: relative; z-index: 2; }
+  .quote-text em { color: var(--gold); font-style: normal; }
+  .quote-line { width: 80px; height: 1px; background: var(--gold); margin: 0 auto 24px; }
+  .quote-source { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+
+  /* STEPS */
+  .section-steps { background: var(--charcoal); padding: 100px 60px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 60px; position: relative; }
+  .steps-grid::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0.3; z-index: 0; }
+  .step-item { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
+  .step-circle { width: 56px; height: 56px; border: 1px solid rgba(201,169,110,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; background: var(--charcoal); font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); font-weight: 600; transition: all 0.3s ease; }
+  .step-item:hover .step-circle { background: var(--gold); color: var(--black); border-color: var(--gold); box-shadow: 0 0 30px rgba(201,169,110,0.3); }
+  .step-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--ivory); margin-bottom: 10px; }
+  .step-desc { font-size: 11px; font-weight: 300; color: var(--muted); line-height: 1.7; }
+
+  /* WAITLIST */
+  .section-waitlist { padding: 120px 60px; background: linear-gradient(135deg, #1a120a 0%, #0d0a07 50%, #1a1208 100%); text-align: center; position: relative; overflow: hidden; }
+  .section-waitlist::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%); pointer-events: none; }
+  .waitlist-headline { font-family: 'Playfair Display', serif; font-size: clamp(40px, 5vw, 72px); font-weight: 700; color: var(--ivory); line-height: 1.1; margin-bottom: 20px; position: relative; z-index: 2; }
+  .waitlist-headline em { color: var(--gold); font-style: italic; }
+  .waitlist-sub { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--muted); margin-bottom: 48px; position: relative; z-index: 2; }
+  .perks-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 56px; flex-wrap: wrap; position: relative; z-index: 2; }
+  .perk { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 300; color: var(--muted); }
+  .perk-icon { width: 32px; height: 32px; border: 1px solid rgba(201,169,110,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gold); }
+  .waitlist-form { display: flex; gap: 0; max-width: 520px; margin: 0 auto 16px; position: relative; z-index: 2; }
+  .waitlist-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,169,110,0.3); border-right: none; color: var(--ivory); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; padding: 18px 24px; outline: none; transition: border-color 0.3s ease; }
+  .waitlist-input::placeholder { color: rgba(245,240,232,0.3); letter-spacing: 1px; }
+  .waitlist-input:focus { border-color: var(--gold); }
+  .waitlist-btn { background: var(--gold); color: var(--black); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 18px 36px; border: none; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; }
+  .waitlist-btn:hover { background: var(--gold-light); }
+  .waitlist-note { font-size: 11px; font-weight: 300; color: rgba(245,240,232,0.3); letter-spacing: 1px; position: relative; z-index: 2; }
+
+  /* FOOTER */
+  footer { background: var(--black); padding: 60px; border-top: 1px solid rgba(201,169,110,0.1); display: flex; justify-content: space-between; align-items: center; }
+  .footer-logo { font-family: 'Glacial Indifference', 'Montserrat', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 6px; }
+  .yer-word { font-family: 'Glacial Indifference', 'Montserrat', sans-serif; letter-spacing: 2px; font-style: normal !important; }
+  .footer-tagline { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--muted); margin-top: 4px; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-link { font-size: 11px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+  .footer-link:hover { color: var(--gold); }
+  .footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); letter-spacing: 1px; }
+
+  /* Animations */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 28px; }
+    .nav-tagline { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 120px 28px 60px; }
+    .hero-visual { display: none; }
+    .section-problem, .section-solution, .section-steps, .section-waitlist { padding: 70px 28px; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .solution-grid { grid-template-columns: 1fr; gap: 40px; }
+    .steps-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .steps-grid::before { display: none; }
+    .waitlist-form { flex-direction: column; }
+    .waitlist-input { border-right: 1px solid rgba(201,169,110,0.3); border-bottom: none; }
+    footer { flex-direction: column; gap: 32px; text-align: center; padding: 40px 28px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">YER APP</div>
+  <div class="nav-tagline">Your App. Your Style. Your Potential.</div>
+  <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-watermark">YER APP</div>
+  <div class="hero-content">
+    <div class="hero-label">Launching 2026 · Fashion Intelligence</div>
+    <h1 class="hero-headline">Your closet,<br><em>curated.</em><br>Finally.</h1>
+    <p class="hero-sub">Meet <span class="yer-word">YER APP</span> the fashion app that makes your wardrobe work as hard as you do.</p>
+    <p class="hero-body">Stop staring at a full closet feeling like you have nothing to wear. <span class="yer-word">YER APP</span> is your personal AI stylist, outfit planner, and fashion community, all built around what you already own.</p>
+    <div class="hero-cta-group">
+      <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="btn-primary">Join the Waitlist →</a>
+      <p class="hero-note">Free early access · No spam</p>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="phone-frame-accent"></div>
+    <div class="phone-mockup">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <div class="app-logo-sm">YER APP</div>
+          <div class="app-avatar"></div>
+        </div>
+        <div class="app-greeting">Good morning,<strong>Today's Looks ✦</strong></div>
+        <div class="outfit-card">
+          <div class="outfit-label">✦ Today's Outfit</div>
+          <div class="outfit-preview">
+            <div class="outfit-item">👗</div>
+            <div class="outfit-item">👠</div>
+            <div class="outfit-item">👜</div>
+          </div>
+          <div class="outfit-title">The Power Edit</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num">47</div><div class="stat-label">Items in Closet</div></div>
+          <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Outfits This Week</div></div>
+        </div>
+        <div class="trend-tag"><div class="trend-dot"></div>Trend Alert: Quiet Luxury</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- PROBLEM -->
+<section class="section-problem">
+  <div class="section-label reveal">The struggle is real</div>
+  <h2 class="section-headline reveal">A closet full of clothes and nothing to wear.</h2>
+  <div class="problem-grid">
+    <div class="problem-card reveal">
+      <div class="problem-num">01</div>
+      <div class="problem-title">Wardrobe Chaos</div>
+      <p class="problem-body">You own it all but can't see it. Your best pieces are buried, forgotten, and unworn. While you reach for the same 10 items on repeat.</p>
+    </div>
+    <div class="problem-card reveal">
+      <div class="problem-num">02</div>
+      <div class="problem-title">Wasted Purchases</div>
+      <p class="problem-body">Without a clear picture of your wardrobe, you overspend on items you already have or pieces that never complete a look.</p>
+    </div>
+    <div class="problem-card reveal">
+      <div class="problem-num">03</div>
+      <div class="problem-title">Style Paralysis</div>
+      <p class="problem-body">Spending 20 minutes deciding every single morning. Planning outfits for events, seasons, or travel feels overwhelming. It shouldn't be this hard.</p>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- SOLUTION -->
+<section class="section-solution">
+  <div class="section-label reveal">The solution</div>
+  <h2 class="section-headline reveal">Everything your wardrobe has been missing.</h2>
+  <div class="solution-grid">
+    <ul class="features-list">
+      <li class="feature-item reveal">
+        <div class="feature-icon">✦</div>
+        <div><div class="feature-title">Closet Scan &amp; Inventory</div><p class="feature-desc">Upload your wardrobe via photos. <span class="yer-word">YER APP</span> catalogues every piece so you always know exactly what you own.</p></div>
+      </li>
+      <li class="feature-item reveal">
+        <div class="feature-icon">◈</div>
+        <div><div class="feature-title">AI Outfit Planning</div><p class="feature-desc">Daily and event-specific outfit suggestions built around your existing wardrobe and personal calendar.</p></div>
+      </li>
+      <li class="feature-item reveal">
+        <div class="feature-icon">❋</div>
+        <div><div class="feature-title">Capsule Wardrobe Guidance</div><p class="feature-desc">Know exactly what to keep, what to toss, and what single piece completes your entire wardrobe.</p></div>
+      </li>
+      <li class="feature-item reveal">
+        <div class="feature-icon">◉</div>
+        <div><div class="feature-title">Community &amp; Trend Feed</div><p class="feature-desc">Draw inspiration from a fashion-forward community. Get real-time trend alerts and seasonal updates.</p></div>
+      </li>
+      <li class="feature-item reveal">
+        <div class="feature-icon">◇</div>
+        <div><div class="feature-title">Smart Recommendations</div><p class="feature-desc"><span class="yer-word">YER APP</span> shows you the exact pieces missing from your wardrobe so every purchase is intentional.</p></div>
+      </li>
+    </ul>
+    <div class="reveal">
+      <div class="phone-mockup-light">
+        <div style="position:absolute;inset:0;padding:44px 18px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="text-align:center;font-family:'Glacial Indifference','Montserrat',sans-serif;font-size:14px;color:var(--gold);letter-spacing:3px;font-style:normal;">YER APP</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--muted);">Your Style Today</div>
+          <div style="background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:12px;">
+            <div style="font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Community Picks ✦</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(201,169,110,0.15),rgba(232,213,196,0.05));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">👗</div>
+              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(232,213,196,0.1),rgba(201,169,110,0.08));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">🧥</div>
+            </div>
+          </div>
+          <div style="background:rgba(201,169,110,0.12);border-radius:8px;padding:10px;display:flex;align-items:center;gap:8px;">
+            <div style="font-size:16px;">🔔</div>
+            <div>
+              <div style="font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">Sale Alert</div>
+              <div style="font-size:10px;color:var(--muted);">Your wishlist items are 30% off</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Quiet Luxury</span>
+            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Coastal Chic</span>
+            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Power Dressing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- QUOTE -->
+<section class="section-quote">
+  <div class="quote-line"></div>
+  <p class="quote-text reveal">"Remember Cher's closet from <em>Clueless</em>?<br><span class="yer-word">YER APP</span> is exactly that, it's built and curated for <em>you.</em>"</p>
+  <div class="quote-line"></div>
+  <p class="quote-source reveal">Yvette Cruz · Founder, <span class="yer-word">YER APP</span></p>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section-steps">
+  <div class="section-label reveal">How it works</div>
+  <h2 class="section-headline reveal">Style, simplified<br>in five steps.</h2>
+  <div class="steps-grid">
+    <div class="step-item reveal"><div class="step-circle">01</div><div class="step-title">Scan Your Closet</div><p class="step-desc">Upload your wardrobe with photos. <span class="yer-word">YER APP</span> organizes everything for you.</p></div>
+    <div class="step-item reveal"><div class="step-circle">02</div><div class="step-title">Plan Your Outfits</div><p class="step-desc">Get daily AI-powered looks based on your style and calendar.</p></div>
+    <div class="step-item reveal"><div class="step-circle">03</div><div class="step-title">Smart Recs</div><p class="step-desc">Discover the exact pieces your wardrobe is missing.</p></div>
+    <div class="step-item reveal"><div class="step-circle">04</div><div class="step-title">Join the Community</div><p class="step-desc">Explore, share, and get inspired by a fashion-forward feed.</p></div>
+    <div class="step-item reveal"><div class="step-circle">05</div><div class="step-title">Stay Season-Ready</div><p class="step-desc">Seasonal updates and trend alerts keep you always ahead.</p></div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- WAITLIST -->
+<section class="section-waitlist" id="waitlist">
+  <h2 class="waitlist-headline reveal">Be first.<br>Be styled.<br> Be <span class="yer-word">YER APP.</span></h2>
+  <p class="waitlist-sub reveal">Join the waitlist. Get exclusive early access and founding member perks.</p>
+  <div class="perks-row reveal">
+    <div class="perk"><div class="perk-icon">✦</div><span>Founding Member Status</span></div>
+    <div class="perk"><div class="perk-icon">◈</div><span>3 Months Free Premium</span></div>
+    <div class="perk"><div class="perk-icon">❋</div><span>First Access to Features</span></div>
+  </div>
+  <div class="waitlist-form reveal" style="justify-content:center;">
+    <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="waitlist-btn" style="text-decoration:none; display:inline-block; padding: 20px 56px; font-size:12px;">Secure My Spot →</a>
+  </div>
+  <p class="waitlist-note reveal">You'll receive a confirmation email after signing up. No spam, ever.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">YER APP</div>
+    <div class="footer-tagline">Your App. Your Style. Your Potential.</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/yer_app" target="_blank" class="footer-link">Instagram</a>
+    <a href="https://www.tiktok.com/@yer_app" target="_blank" class="footer-link">TikTok</a>
+    <a href="https://yvettecruz.my.canva.site/yerapp-com-privacy-policy" target="_blank" class="footer-link">Privacy</a>
+    <a href="mailto:yer.app.ya@gmail.com" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 <span class="yer-word">YER APP</span>. All rights reserved.</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 80);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
