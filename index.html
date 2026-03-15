@@ -3,18 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YER App — Your Style, Your Potential</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<title>YER APP &mdash; Your Style, Your Potential</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
 <style>
   :root {
-    --black: #0A0A0A;
-    --charcoal: #1C1C1C;
-    --gold: #C9A96E;
-    --gold-light: #E2C898;
-    --ivory: #F5F0E8;
-    --blush: #E8D5C4;
-    --muted: rgba(245,240,232,0.6);
+    --black: #000000;
+    --off-black: #0a0405;
+    --burgundy: #68181f;
+    --burgundy-deep: #3d0e13;
+    --burgundy-mid: #7d1e26;
+    --gold: #cea707;
+    --gold-dim: rgba(206,167,7,0.5);
+    --cream: #efdbbf;
+    --cream-dim: rgba(239,219,191,0.6);
+    --cream-faint: rgba(239,219,191,0.12);
+    --white: #ffffff;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,497 +26,979 @@
 
   body {
     background: var(--black);
-    color: var(--ivory);
+    color: var(--cream);
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
     cursor: none;
   }
 
+  /* ── CUSTOM CURSOR ── */
   .cursor {
-    width: 10px; height: 10px;
-    background: var(--gold);
-    border-radius: 50%;
+    width: 32px; height: 32px;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
+    transition: transform 0.15s ease;
   }
   .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--gold);
+    width: 56px; height: 56px;
+    border: 1px solid var(--gold-dim);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 9998;
     transform: translate(-50%, -50%);
-    transition: all 0.15s ease;
-    opacity: 0.6;
+    transition: all 0.2s ease;
   }
 
-  body::before {
+  /* ── GRAIN OVERLAY ── */
+  body::after {
     content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
     pointer-events: none;
-    z-index: 1000;
-    opacity: 0.3;
+    z-index: 9000;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
   }
 
-  /* NAV */
+  /* ── NAV ── */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 28px 60px;
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 0 60px;
+    height: 72px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.96) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(239,219,191,0.08);
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
   }
   .nav-logo {
     font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 6px;
+    font-size: 18px; font-weight: 700;
+    color: var(--cream); letter-spacing: 10px;
     text-transform: uppercase;
   }
-  .nav-tagline {
+  .nav-center {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    font-style: italic;
-    color: var(--muted);
-    letter-spacing: 2px;
+    font-size: 11px; font-style: italic;
+    color: var(--cream-dim); letter-spacing: 3px;
+    text-transform: none;
   }
   .nav-cta {
-    background: transparent;
-    border: 1px solid var(--gold);
-    color: var(--gold);
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 12px 28px;
-    cursor: pointer;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 2px;
     transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
   }
-  .nav-cta:hover { background: var(--gold); color: var(--black); }
+  .nav-cta:hover { color: var(--cream); border-color: var(--cream); }
 
-  /* HERO */
+  /* ── HERO ── */
   .hero {
     min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 140px 60px 80px;
     position: relative;
     overflow: hidden;
   }
-  .hero::after {
-    display: none;
-  }
-  .hero-watermark {
-    position: absolute;
-    right: -60px; top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
-    font-size: 400px;
-    font-weight: 700;
-    color: rgba(201,169,110,0.04);
-    pointer-events: none;
-    z-index: 0;
-    line-height: 1;
-    user-select: none;
-  }
-  .hero-content { position: relative; z-index: 2; }
-
-  .hero-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 32px;
+  /* Left panel — deep burgundy */
+  .hero-left {
+    background: var(--burgundy-deep);
+    padding: 140px 60px 80px 60px;
     display: flex;
-    align-items: center;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.2s forwards;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
   }
-  .hero-label::before { content: ''; width: 40px; height: 1px; background: var(--gold); }
-
+  .hero-left::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(206,167,7,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-issue {
+    position: absolute;
+    bottom: -60px; right: -40px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    opacity: 1;
+  }
+  .hero-kicker {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.3s forwards;
+  }
+  .hero-kicker::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
   .hero-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(52px, 6vw, 88px);
-    font-weight: 700;
-    line-height: 1.05;
-    color: var(--ivory);
-    margin-bottom: 16px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 7.5vw, 110px);
+    font-weight: 300; line-height: 0.95;
+    color: var(--white); letter-spacing: -2px;
+    margin-bottom: 40px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards;
   }
-  .hero-headline em { font-style: italic; color: var(--gold); }
-
+  .hero-headline em { font-style: italic; color: var(--gold); font-weight: 300; }
+  .hero-headline strong { font-weight: 700; display: block; }
+  .hero-rule {
+    width: 48px; height: 2px;
+    background: var(--gold); margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.6s ease 0.7s forwards;
+  }
   .hero-sub {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-style: italic;
-    color: var(--gold-light);
-    margin-bottom: 28px;
-    line-height: 1.5;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.6s forwards;
+    font-size: 18px; font-style: italic; font-weight: 300;
+    color: var(--cream-dim); line-height: 1.6;
+    max-width: 360px; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.7s ease 0.85s forwards;
   }
-  .hero-body {
-    font-size: 14px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.9;
-    max-width: 440px;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
-  }
-  .hero-cta-group {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 1s forwards;
+  .hero-cta-row {
+    display: flex; align-items: center; gap: 36px;
+    opacity: 0; animation: fadeUp 0.7s ease 1s forwards;
   }
   .btn-primary {
-    background: var(--gold);
-    color: var(--black);
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 18px 44px;
-    border: none;
-    cursor: pointer;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--black); background: var(--cream);
+    text-decoration: none; display: inline-block;
+    padding: 16px 40px;
     transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+    border: 1px solid var(--cream);
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,169,110,0.3); background: var(--gold-light); }
-  .hero-note { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: 1px; }
+  .btn-primary:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .hero-note {
+    font-size: 10px; font-weight: 300;
+    color: var(--cream-dim); letter-spacing: 1px;
+  }
 
-  /* Phone mockup */
-  .hero-visual {
-    position: relative; z-index: 2;
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0;
-    animation: fadeIn 1.2s ease 0.6s forwards;
-  }
-  .phone-frame-accent {
-    position: absolute;
-    width: 260px; height: 520px;
-    border: 1px solid rgba(201,169,110,0.15);
-    border-radius: 44px;
-    top: 28px; left: 28px;
-    z-index: 1;
-  }
-  .phone-mockup {
-    width: 280px; height: 560px;
-    background: var(--charcoal);
-    border-radius: 44px;
-    border: 1px solid rgba(201,169,110,0.3);
+  /* Right panel — black with editorial phone */
+  .hero-right {
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 140px 60px 80px 80px;
     position: relative;
-    box-shadow: 0 60px 120px rgba(0,0,0,0.8), inset 0 1px 0 rgba(201,169,110,0.2);
     overflow: hidden;
-    z-index: 2;
+  }
+  /* Large vertical text on right edge */
+  .hero-vertical-text {
+    position: absolute;
+    right: 28px; top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    transform-origin: center center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 300;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: rgba(239,219,191,0.2);
+    white-space: nowrap;
+  }
+  .hero-right-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 300;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 32px;
+  }
+
+  /* ── PHONE MOCKUP ── */
+  .phone-wrap {
+    position: relative;
+    width: 260px;
+  }
+  .phone-accent-border {
+    position: absolute;
+    width: 100%; height: 100%;
+    border: 1px solid rgba(206,167,7,0.2);
+    border-radius: 40px;
+    top: 12px; left: 12px;
+    z-index: 0;
+  }
+  .phone-body {
+    width: 260px; height: 520px;
+    background: var(--burgundy-deep);
+    border-radius: 40px;
+    border: 1px solid rgba(104,24,31,0.7);
+    position: relative; z-index: 1;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(206,167,7,0.1);
   }
   .phone-notch {
-    width: 100px; height: 28px;
+    width: 80px; height: 22px;
     background: var(--black);
-    border-radius: 0 0 18px 18px;
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
+    border-radius: 0 0 14px 14px;
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%); z-index: 5;
   }
   .phone-screen {
     position: absolute; inset: 0;
-    padding: 48px 20px 20px;
-    background: linear-gradient(160deg, #1a1410 0%, #0d0a07 100%);
-    display: flex; flex-direction: column; gap: 12px;
+    padding: 40px 16px 16px;
+    background: linear-gradient(170deg, #1f0508 0%, #0d0203 100%);
+    display: flex; flex-direction: column; gap: 10px;
     overflow: hidden;
   }
-  .app-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+  .app-header { display: flex; justify-content: space-between; align-items: center; }
   .app-logo-sm {
     font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
-    font-size: 18px; color: var(--gold); letter-spacing: 3px;
+    font-size: 13px; color: var(--cream); letter-spacing: 4px;
   }
-  .app-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--blush)); }
-  .app-greeting { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--muted); }
-  .app-greeting strong { font-family: 'Playfair Display', serif; font-style: normal; color: var(--ivory); font-size: 16px; display: block; margin-top: 2px; }
-  .outfit-card { background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); border-radius: 16px; padding: 14px; }
-  .outfit-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-  .outfit-preview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
-  .outfit-item { aspect-ratio: 1; border-radius: 8px; background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(232,213,196,0.1)); display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .outfit-title { font-family: 'Playfair Display', serif; font-size: 12px; color: var(--ivory); }
-  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .stat-card { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.06); }
-  .stat-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); font-weight: 600; }
-  .stat-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
-  .trend-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.3); border-radius: 20px; padding: 6px 12px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-top: 4px; width: fit-content; }
-  .trend-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s ease infinite; }
-
-  /* Divider */
-  .gold-divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0.4; }
-
-  /* SECTION LABELS */
-  .section-label {
-    font-size: 10px; font-weight: 500; letter-spacing: 5px;
-    text-transform: uppercase; color: var(--gold);
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 16px;
+  .app-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--burgundy), var(--gold));
   }
-  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
-  .section-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(36px, 4vw, 56px);
-    font-weight: 600; line-height: 1.1;
-    color: var(--ivory);
-    max-width: 600px; margin-bottom: 60px;
+  .app-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px; font-style: italic; color: var(--cream-dim);
+  }
+  .app-greeting strong {
+    font-family: 'Cormorant Garamond', serif; font-style: normal;
+    color: var(--cream); font-size: 15px; display: block; margin-top: 2px;
+  }
+  .outfit-card {
+    background: rgba(104,24,31,0.25);
+    border: 1px solid rgba(104,24,31,0.5);
+    border-radius: 14px; padding: 12px;
+  }
+  .outfit-label { font-size: 7px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .outfit-preview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-bottom: 8px; }
+  .outfit-item {
+    aspect-ratio: 1; border-radius: 6px;
+    background: linear-gradient(135deg, rgba(104,24,31,0.4), rgba(206,167,7,0.1));
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .outfit-title { font-family: 'Cormorant Garamond', serif; font-size: 12px; color: var(--cream); }
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .stat-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px; padding: 10px;
+    border: 1px solid rgba(104,24,31,0.3);
+  }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold); font-weight: 600; }
+  .stat-label { font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: var(--cream-dim); margin-top: 1px; }
+  .trend-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(206,167,7,0.1);
+    border: 1px solid rgba(206,167,7,0.25);
+    border-radius: 20px; padding: 5px 10px;
+    font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+    width: fit-content;
+  }
+  .trend-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s ease infinite;
   }
 
-  /* PROBLEM */
-  .section-problem { background: var(--charcoal); padding: 100px 60px; }
-  .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  /* ── EDITORIAL DIVIDER ── */
+  .ed-divider {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 20px;
+    padding: 0 60px;
+    background: var(--black);
+  }
+  .ed-divider-line { height: 1px; background: rgba(239,219,191,0.1); }
+  .ed-divider-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px; font-style: italic;
+    color: rgba(239,219,191,0.25); letter-spacing: 3px;
+    white-space: nowrap;
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .section-problem {
+    background: var(--cream);
+    padding: 120px 60px;
+    position: relative;
+  }
+  .problem-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 60px; align-items: end;
+    margin-bottom: 80px;
+  }
+  .problem-vol {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px; font-weight: 700; line-height: 1;
+    color: rgba(104,24,31,0.12); letter-spacing: -4px;
+    user-select: none;
+  }
+  .problem-header-text .section-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--burgundy); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .problem-header-text .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--burgundy); }
+  .problem-header-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4.5vw, 64px);
+    font-weight: 300; line-height: 1.05;
+    color: var(--black); letter-spacing: -1px;
+  }
+  .problem-header-text h2 em { font-style: italic; color: var(--burgundy); }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 2px solid var(--black);
+  }
   .problem-card {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(201,169,110,0.1);
-    padding: 44px 36px;
-    transition: all 0.4s ease;
+    padding: 48px 40px;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    transition: background 0.4s ease;
+  }
+  .problem-card:last-child { border-right: none; }
+  .problem-card:hover { background: rgba(104,24,31,0.05); }
+  .problem-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-weight: 400;
+    color: var(--burgundy); letter-spacing: 2px;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .problem-num::after { content: ''; flex: 1; height: 1px; background: rgba(104,24,31,0.2); }
+  .problem-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; line-height: 1.1;
+    color: var(--black); margin-bottom: 16px;
+  }
+  .problem-body {
+    font-size: 12px; font-weight: 300;
+    color: rgba(0,0,0,0.55); line-height: 1.9;
+  }
+
+  /* ── SOLUTION SECTION ── */
+  .section-solution {
+    background: var(--black);
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .solution-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Left col */
+  .solution-left {
+    padding: 0 80px 0 60px;
+    border-right: 1px solid rgba(239,219,191,0.08);
+  }
+  .section-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+  .solution-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 4.5vw, 68px);
+    font-weight: 300; line-height: 1.0; letter-spacing: -1px;
+    color: var(--white); margin-bottom: 64px;
+  }
+  .solution-headline em { font-style: italic; color: var(--gold); }
+  .features-list { list-style: none; }
+  .feature-item {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 20px; align-items: start;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(239,219,191,0.07);
+    transition: all 0.3s ease;
+  }
+  .feature-item:first-child { padding-top: 0; }
+  .feature-item:last-child { border-bottom: none; }
+  .feature-item:hover .feature-title { color: var(--gold); }
+  .feature-star {
+    color: var(--gold); font-size: 12px;
+    margin-top: 4px;
+  }
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 600;
+    color: var(--cream); margin-bottom: 6px;
+    transition: color 0.3s ease;
+  }
+  .feature-desc {
+    font-size: 12px; font-weight: 300;
+    color: var(--cream-dim); line-height: 1.8;
+  }
+  /* Right col */
+  .solution-right {
+    padding: 0 60px 0 80px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    position: relative;
+  }
+  .solution-right::before {
+    content: 'THE APP';
+    position: absolute; top: 20px; left: 80px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 300;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: rgba(239,219,191,0.15);
+  }
+  .phone-mockup-light {
+    width: 240px; height: 480px;
+    background: var(--burgundy-deep);
+    border-radius: 36px;
+    border: 1px solid rgba(104,24,31,0.6);
+    position: relative;
+    box-shadow: 0 40px 80px rgba(104,24,31,0.15), 0 0 0 1px rgba(206,167,7,0.06);
+    overflow: hidden;
+  }
+
+  /* ── QUOTE SECTION ── */
+  .section-quote {
+    background: var(--burgundy);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    min-height: 480px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-side-left {
+    border-right: 1px solid rgba(239,219,191,0.1);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px 40px;
+  }
+  .quote-issue-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px; font-weight: 300;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: rgba(239,219,191,0.3);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin-bottom: 20px;
+  }
+  .quote-center {
+    padding: 80px 60px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 160px; font-weight: 700; line-height: 0.7;
+    color: rgba(239,219,191,0.06);
+    position: absolute; top: 40px; left: 50px;
+    user-select: none;
+  }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3.2vw, 48px);
+    font-weight: 300; font-style: italic;
+    line-height: 1.3; color: var(--cream);
+    position: relative; z-index: 2;
+    margin-bottom: 40px;
+  }
+  .quote-text em { font-style: normal; color: var(--gold); }
+  .quote-attribution {
+    display: flex; align-items: center; gap: 16px;
+    position: relative; z-index: 2;
+  }
+  .quote-rule { width: 32px; height: 1px; background: var(--gold); }
+  .quote-source {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .quote-side-right {
+    border-left: 1px solid rgba(239,219,191,0.1);
+    background: rgba(0,0,0,0.15);
+    display: flex; align-items: flex-end;
+    padding: 60px 40px;
+  }
+  .quote-aside {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic;
+    color: rgba(239,219,191,0.4);
+    line-height: 1.7;
+  }
+
+  /* ── STEPS SECTION ── */
+  .section-steps {
+    background: var(--off-black);
+    padding: 120px 60px;
+    position: relative;
+  }
+  .steps-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: end;
+    margin-bottom: 80px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(239,219,191,0.08);
+  }
+  .steps-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 300; line-height: 1.0;
+    color: var(--white); letter-spacing: -1px;
+  }
+  .steps-header h2 em { font-style: italic; color: var(--gold); }
+  .steps-header-right {
+    font-size: 12px; font-weight: 300;
+    color: var(--cream-dim); line-height: 1.8;
+    max-width: 360px;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .step-item {
+    padding: 40px 32px 40px 0;
+    border-right: 1px solid rgba(239,219,191,0.07);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .step-item:last-child { border-right: none; padding-right: 0; }
+  .step-item:first-child { padding-left: 0; }
+  .step-item:hover .step-num { color: var(--gold); }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300; line-height: 1;
+    color: rgba(239,219,191,0.15);
+    margin-bottom: 24px;
+    transition: color 0.3s ease;
+  }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 600;
+    color: var(--cream); margin-bottom: 12px;
+  }
+  .step-desc {
+    font-size: 11px; font-weight: 300;
+    color: var(--cream-dim); line-height: 1.8;
+  }
+  .step-item:not(:first-child) { padding-left: 32px; }
+
+  /* ── WAITLIST SECTION ── */
+  .section-waitlist {
+    background: var(--black);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Left — full burgundy block */
+  .waitlist-left {
+    background: var(--burgundy);
+    padding: 100px 80px;
+    display: flex; flex-direction: column;
+    justify-content: center;
     position: relative; overflow: hidden;
   }
-  .problem-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.4s ease; }
-  .problem-card:hover { background: rgba(201,169,110,0.05); }
-  .problem-card:hover::before { transform: scaleX(1); }
-  .problem-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: rgba(201,169,110,0.12); line-height: 1; margin-bottom: 20px; }
-  .problem-title { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ivory); margin-bottom: 14px; }
-  .problem-body { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.8; }
+  .waitlist-left::before {
+    content: 'JOIN';
+    position: absolute; bottom: -20px; left: -10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 280px; font-weight: 700; line-height: 1;
+    color: rgba(0,0,0,0.15);
+    user-select: none; pointer-events: none;
+  }
+  .waitlist-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 84px);
+    font-weight: 300; line-height: 0.95;
+    color: var(--cream); letter-spacing: -2px;
+    margin-bottom: 36px;
+    position: relative; z-index: 2;
+  }
+  .waitlist-headline em { font-style: italic; color: var(--gold); font-weight: 300; }
+  .waitlist-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    color: rgba(239,219,191,0.65);
+    line-height: 1.6; max-width: 340px;
+    position: relative; z-index: 2;
+  }
+  /* Right — black with perks + CTA */
+  .waitlist-right {
+    padding: 100px 80px;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid rgba(239,219,191,0.06);
+  }
+  .perks-list {
+    list-style: none; margin-bottom: 56px;
+  }
+  .perk-item {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(239,219,191,0.06);
+  }
+  .perk-item:first-child { border-top: 1px solid rgba(239,219,191,0.06); }
+  .perk-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--gold);
+    letter-spacing: 2px; min-width: 24px;
+    margin-top: 2px;
+  }
+  .perk-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 400;
+    color: var(--cream); line-height: 1.3;
+  }
+  .perk-sub {
+    font-size: 11px; font-weight: 300;
+    color: var(--cream-dim); margin-top: 4px;
+  }
+  .waitlist-btn {
+    display: inline-block; text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--black); background: var(--cream);
+    padding: 20px 52px;
+    border: 1px solid var(--cream);
+    transition: all 0.3s ease;
+    align-self: flex-start;
+    margin-bottom: 20px;
+  }
+  .waitlist-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+  .waitlist-note {
+    font-size: 10px; font-weight: 300;
+    color: rgba(239,219,191,0.25); letter-spacing: 1px;
+  }
 
-  /* SOLUTION */
-  .section-solution { background: var(--ivory); padding: 100px 60px; }
-  .section-solution .section-label { color: #8B6914; }
-  .section-solution .section-label::before { background: #8B6914; }
-  .section-solution .section-headline { color: var(--black); }
-  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .features-list { list-style: none; display: flex; flex-direction: column; gap: 24px; }
-  .feature-item { display: flex; gap: 20px; align-items: flex-start; padding-bottom: 24px; border-bottom: 1px solid rgba(10,10,10,0.08); }
-  .feature-item:last-child { border-bottom: none; }
-  .feature-icon { width: 40px; height: 40px; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; }
-  .feature-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--black); margin-bottom: 6px; }
-  .feature-desc { font-size: 13px; font-weight: 300; color: rgba(10,10,10,0.6); line-height: 1.7; }
-  .phone-mockup-light { width: 260px; height: 520px; background: var(--black); border-radius: 40px; border: 1px solid rgba(201,169,110,0.4); position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.2); overflow: hidden; margin: 0 auto; }
-
-  /* QUOTE */
-  .section-quote { padding: 120px 60px; background: var(--black); text-align: center; position: relative; overflow: hidden; }
-  .quote-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 56px); font-style: italic; font-weight: 300; color: var(--ivory); line-height: 1.3; max-width: 800px; margin: 0 auto 32px; position: relative; z-index: 2; }
-  .quote-text em { color: var(--gold); font-style: normal; }
-  .quote-line { width: 80px; height: 1px; background: var(--gold); margin: 0 auto 24px; }
-  .quote-source { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
-
-  /* STEPS */
-  .section-steps { background: var(--charcoal); padding: 100px 60px; }
-  .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 60px; position: relative; }
-  .steps-grid::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0.3; z-index: 0; }
-  .step-item { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
-  .step-circle { width: 56px; height: 56px; border: 1px solid rgba(201,169,110,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; background: var(--charcoal); font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); font-weight: 600; transition: all 0.3s ease; }
-  .step-item:hover .step-circle { background: var(--gold); color: var(--black); border-color: var(--gold); box-shadow: 0 0 30px rgba(201,169,110,0.3); }
-  .step-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--ivory); margin-bottom: 10px; }
-  .step-desc { font-size: 11px; font-weight: 300; color: var(--muted); line-height: 1.7; }
-
-  /* WAITLIST */
-  .section-waitlist { padding: 120px 60px; background: linear-gradient(135deg, #1a120a 0%, #0d0a07 50%, #1a1208 100%); text-align: center; position: relative; overflow: hidden; }
-  .section-waitlist::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,169,110,0.12) 0%, transparent 70%); pointer-events: none; }
-  .waitlist-headline { font-family: 'Playfair Display', serif; font-size: clamp(40px, 5vw, 72px); font-weight: 700; color: var(--ivory); line-height: 1.1; margin-bottom: 20px; position: relative; z-index: 2; }
-  .waitlist-headline em { color: var(--gold); font-style: italic; }
-  .waitlist-sub { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--muted); margin-bottom: 48px; position: relative; z-index: 2; }
-  .perks-row { display: flex; justify-content: center; gap: 40px; margin-bottom: 56px; flex-wrap: wrap; position: relative; z-index: 2; }
-  .perk { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 300; color: var(--muted); }
-  .perk-icon { width: 32px; height: 32px; border: 1px solid rgba(201,169,110,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gold); }
-  .waitlist-form { display: flex; gap: 0; max-width: 520px; margin: 0 auto 16px; position: relative; z-index: 2; }
-  .waitlist-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(201,169,110,0.3); border-right: none; color: var(--ivory); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; padding: 18px 24px; outline: none; transition: border-color 0.3s ease; }
-  .waitlist-input::placeholder { color: rgba(245,240,232,0.3); letter-spacing: 1px; }
-  .waitlist-input:focus { border-color: var(--gold); }
-  .waitlist-btn { background: var(--gold); color: var(--black); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; padding: 18px 36px; border: none; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; }
-  .waitlist-btn:hover { background: var(--gold-light); }
-  .waitlist-note { font-size: 11px; font-weight: 300; color: rgba(245,240,232,0.3); letter-spacing: 1px; position: relative; z-index: 2; }
-
-  /* FOOTER */
-  footer { background: var(--black); padding: 60px; border-top: 1px solid rgba(201,169,110,0.1); display: flex; justify-content: space-between; align-items: center; }
-  .footer-logo { font-family: 'Glacial Indifference', 'Montserrat', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 6px; }
-  .yer-word { font-family: 'Glacial Indifference', 'Montserrat', sans-serif; letter-spacing: 2px; font-style: normal !important; }
-  .footer-tagline { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--muted); margin-top: 4px; }
-  .footer-links { display: flex; gap: 32px; }
-  .footer-link { font-size: 11px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+  /* ── FOOTER ── */
+  footer {
+    background: var(--burgundy-deep);
+    padding: 0 60px;
+    border-top: 1px solid rgba(239,219,191,0.08);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 60px 0;
+    border-bottom: 1px solid rgba(239,219,191,0.08);
+    align-items: center;
+    gap: 40px;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
+    font-size: 24px; color: var(--cream);
+    letter-spacing: 10px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; font-style: italic;
+    color: var(--cream-dim);
+  }
+  .footer-links {
+    display: flex; flex-direction: column;
+    gap: 14px;
+  }
+  .footer-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 300;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--cream-dim); text-decoration: none;
+    transition: color 0.3s ease;
+    width: fit-content;
+  }
   .footer-link:hover { color: var(--gold); }
-  .footer-copy { font-size: 11px; color: rgba(245,240,232,0.2); letter-spacing: 1px; }
+  .footer-social {
+    display: flex; gap: 20px;
+    justify-content: flex-end;
+  }
+  .footer-social a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--cream-dim); text-decoration: none;
+    border-bottom: 1px solid rgba(239,219,191,0.2);
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+  }
+  .footer-social a:hover { color: var(--gold); border-color: var(--gold); }
+  .footer-bottom {
+    padding: 24px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy {
+    font-size: 10px; font-weight: 300;
+    color: rgba(239,219,191,0.2); letter-spacing: 2px;
+  }
+  .yer-word {
+    font-family: 'Glacial Indifference', 'Montserrat', sans-serif;
+    letter-spacing: 2px; font-style: normal !important;
+  }
 
-  /* Animations */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.75); }
+  }
 
-  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+  .reveal {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-fade {
+    opacity: 0; transition: opacity 1s ease;
+  }
+  .reveal-fade.visible { opacity: 1; }
 
-  @media (max-width: 900px) {
-    nav { padding: 20px 28px; }
-    .nav-tagline { display: none; }
-    .hero { grid-template-columns: 1fr; padding: 120px 28px 60px; }
-    .hero-visual { display: none; }
-    .section-problem, .section-solution, .section-steps, .section-waitlist { padding: 70px 28px; }
-    .problem-grid { grid-template-columns: 1fr; }
-    .solution-grid { grid-template-columns: 1fr; gap: 40px; }
-    .steps-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    .steps-grid::before { display: none; }
-    .waitlist-form { flex-direction: column; }
-    .waitlist-input { border-right: 1px solid rgba(201,169,110,0.3); border-bottom: none; }
-    footer { flex-direction: column; gap: 32px; text-align: center; padding: 40px 28px; }
-    .footer-links { flex-wrap: wrap; justify-content: center; }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    nav { padding: 0 28px; }
+    .nav-center { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 28px 80px; min-height: 100vh; }
+    .section-problem, .section-solution, .section-steps { padding: 80px 28px; }
+    .problem-header { grid-template-columns: 1fr; gap: 20px; }
+    .problem-vol { display: none; }
+    .problem-grid { grid-template-columns: 1fr; border-top: none; }
+    .problem-card { border-right: none; border-top: 1px solid rgba(0,0,0,0.1); }
+    .solution-inner { grid-template-columns: 1fr; }
+    .solution-left { padding: 0 28px 60px; border-right: none; }
+    .solution-right { display: none; }
+    .section-quote { grid-template-columns: 1fr; }
+    .quote-side-left, .quote-side-right { display: none; }
+    .quote-center { padding: 60px 28px; }
+    .steps-header { grid-template-columns: 1fr; gap: 20px; }
+    .steps-grid { grid-template-columns: 1fr 1fr; gap: 0; }
+    .step-item { padding: 32px 20px 32px 0; }
+    .section-waitlist { grid-template-columns: 1fr; }
+    .waitlist-left { padding: 80px 28px; }
+    .waitlist-right { padding: 60px 28px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
+    .footer-social { justify-content: flex-start; }
+    footer { padding: 0 28px; }
   }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
+<!-- CURSOR -->
+<div class="cursor" id="cursor">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="158 149 58 68" width="32" height="32">
+    <rect x="158.683" y="158.301" width="16.211" height="58.39" fill="#cea707"/>
+    <polygon points="174.5,149.27 174.5,167.38 158.68,158.31" fill="#cea707"/>
+    <rect x="179.394" y="158.301" width="16.211" height="58.39" fill="#cea707"/>
+    <rect x="200.086" y="158.297" width="15.629" height="23.895" fill="#cea707"/>
+    <polygon points="215.711,172.93 215.711,191.49 200.082,182.2" fill="#cea707"/>
+  </svg>
+</div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
   <div class="nav-logo">YER APP</div>
-  <div class="nav-tagline">Your App. Your Style. Your Potential.</div>
+  <div class="nav-center">Your App. Your Style. Your Potential.</div>
   <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="nav-cta">Join Waitlist</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-watermark">YER APP</div>
-  <div class="hero-content">
-    <div class="hero-label">Launching 2026 · Fashion Intelligence</div>
-    <h1 class="hero-headline">Your closet,<br><em>curated.</em><br>Finally.</h1>
-    <p class="hero-sub">Meet <span class="yer-word">YER APP</span> the fashion app that makes your wardrobe work as hard as you do.</p>
-    <p class="hero-body">Stop staring at a full closet feeling like you have nothing to wear. <span class="yer-word">YER APP</span> is your personal AI stylist, outfit planner, and fashion community, all built around what you already own.</p>
-    <div class="hero-cta-group">
-      <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="btn-primary">Join the Waitlist →</a>
-      <p class="hero-note">Free early access · No spam</p>
+  <!-- LEFT -->
+  <div class="hero-left">
+    <div class="hero-issue">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 375" width="520" height="520" preserveAspectRatio="xMidYMid meet">
+        <g fill="rgba(239,219,191,0.06)" fill-opacity="1">
+          <g transform="translate(138.133853, 276.272209)">
+            <path d="M 21.640625 -133.4375 C 29.515625 -136.707031 37.085938 -138.34375 44.359375 -138.34375 C 50.421875 -138.34375 56.664062 -136.101562 63.09375 -131.625 C 66.601562 -129.195312 70.539062 -124.46875 74.90625 -117.4375 C 77.8125 -112.59375 81.507812 -103.804688 86 -91.078125 L 108.171875 -28.171875 C 113.265625 -14.117188 118.445312 -2.941406 123.71875 5.359375 C 128.988281 13.660156 133.804688 19.898438 138.171875 24.078125 C 142.535156 28.265625 147.078125 31.207031 151.796875 32.90625 C 156.523438 34.601562 160.4375 35.453125 163.53125 35.453125 C 166.625 35.453125 169.378906 35.207031 171.796875 34.71875 L 171.984375 36.546875 C 166.171875 38.484375 160.472656 39.453125 154.890625 39.453125 C 149.316406 39.453125 143.742188 38.023438 138.171875 35.171875 C 132.597656 32.328125 127.382812 28.359375 122.53125 23.265625 C 112.113281 12.722656 103.269531 -3.332031 96 -24.90625 L 88.90625 -45.625 L 39.09375 -45.625 L 26.546875 -13.265625 C 25.941406 -11.816406 25.640625 -10.363281 25.640625 -8.90625 C 25.640625 -7.445312 26.273438 -5.898438 27.546875 -4.265625 C 28.816406 -2.628906 30.785156 -1.8125 33.453125 -1.8125 L 34.90625 -1.8125 L 34.90625 0 L -1.625 0 L -1.625 -1.8125 L 0 -1.8125 C 2.914062 -1.8125 5.765625 -2.691406 8.546875 -4.453125 C 11.335938 -6.210938 13.640625 -8.847656 15.453125 -12.359375 L 60.546875 -120.34375 C 54.003906 -129.675781 45.882812 -134.34375 36.1875 -134.34375 C 31.820312 -134.34375 27.15625 -133.4375 22.1875 -131.625 Z M 41.09375 -51.078125 L 87.09375 -51.078125 L 72.71875 -93.4375 C 69.9375 -101.5625 67.394531 -107.925781 65.09375 -112.53125 Z M 41.09375 -51.078125 "/>
+          </g>
+        </g>
+        <g fill="rgba(239,219,191,0.06)" fill-opacity="1">
+          <g transform="translate(97.007811, 229.275499)">
+            <path d="M -7.46875 -141.265625 C -6.59375 -141.265625 -5.035156 -141.265625 -2.796875 -141.265625 C -0.554688 -141.265625 2.488281 -140.890625 6.34375 -140.140625 C 10.195312 -139.398438 13.769531 -138.3125 17.0625 -136.875 C 20.363281 -135.445312 23.597656 -133.394531 26.765625 -130.71875 C 29.941406 -128.039062 32.648438 -125.550781 34.890625 -123.25 C 37.128906 -120.945312 39.398438 -117.929688 41.703125 -114.203125 C 44.003906 -110.472656 45.867188 -107.300781 47.296875 -104.6875 C 48.734375 -102.070312 50.320312 -98.648438 52.0625 -94.421875 C 54.300781 -89.078125 56.101562 -84.441406 57.46875 -80.515625 C 58.84375 -76.597656 59.59375 -74.453125 59.71875 -74.078125 C 59.84375 -73.710938 60.03125 -73.28125 60.28125 -72.78125 C 60.644531 -71.78125 60.953125 -70.910156 61.203125 -70.171875 C 61.578125 -71.035156 62.445312 -73.332031 63.8125 -77.0625 C 65.1875 -80.800781 66.460938 -84.160156 67.640625 -87.140625 C 68.828125 -90.128906 70.664062 -94.359375 73.15625 -99.828125 C 75.644531 -105.304688 77.914062 -109.628906 79.96875 -112.796875 C 82.019531 -115.972656 84.660156 -119.613281 87.890625 -123.71875 C 91.128906 -127.820312 94.363281 -130.992188 97.59375 -133.234375 C 105.5625 -138.585938 114.019531 -141.265625 122.96875 -141.265625 L 122.96875 -139.390625 C 116.007812 -139.390625 108.890625 -135.71875 101.609375 -128.375 C 94.328125 -121.039062 88.101562 -112.179688 82.9375 -101.796875 C 77.78125 -91.410156 73.550781 -80.648438 70.25 -69.515625 C 66.957031 -58.378906 65.3125 -48.890625 65.3125 -41.046875 L 65.3125 -13.625 C 65.3125 -9.144531 67.238281 -5.785156 71.09375 -3.546875 C 72.957031 -2.421875 75.007812 -1.859375 77.25 -1.859375 L 79.5 -1.859375 L 79.5 0 L 38.8125 0 L 38.8125 -1.859375 L 41.234375 -1.859375 C 44.347656 -1.859375 47.085938 -2.976562 49.453125 -5.21875 C 51.816406 -7.457031 53.0625 -10.195312 53.1875 -13.4375 L 53.1875 -41.234375 C 53.1875 -49.578125 51.441406 -59.34375 47.953125 -70.53125 C 44.472656 -81.726562 39.992188 -92.457031 34.515625 -102.71875 C 29.046875 -112.988281 22.515625 -121.664062 14.921875 -128.75 C 7.335938 -135.84375 -0.125 -139.390625 -7.46875 -139.390625 Z M -7.46875 -141.265625 "/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-kicker">Launching 2026 &nbsp;&bull;&nbsp; Fashion Intelligence</div>
+    <h1 class="hero-headline">
+      Your<br>
+      closet,<br>
+      <em>curated.</em><br>
+      <strong>Finally.</strong>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Meet <span class="yer-word">YER APP</span>, the fashion app that makes your wardrobe work as hard as you do.</p>
+    <div class="hero-cta-row">
+      <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="btn-primary">Join the Waitlist &rarr;</a>
+      <span class="hero-note">Free early access &middot; No spam</span>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="phone-frame-accent"></div>
-    <div class="phone-mockup">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-        <div class="app-header">
-          <div class="app-logo-sm">YER APP</div>
-          <div class="app-avatar"></div>
-        </div>
-        <div class="app-greeting">Good morning,<strong>Today's Looks ✦</strong></div>
-        <div class="outfit-card">
-          <div class="outfit-label">✦ Today's Outfit</div>
-          <div class="outfit-preview">
-            <div class="outfit-item">👗</div>
-            <div class="outfit-item">👠</div>
-            <div class="outfit-item">👜</div>
+  <!-- RIGHT -->
+  <div class="hero-right">
+    <div class="hero-vertical-text">YER APP &mdash; The Wardrobe Intelligence App</div>
+    <div class="hero-right-label">App Preview &nbsp;&bull;&nbsp; 2026</div>
+    <div class="phone-wrap" style="opacity:1;">
+      <div class="phone-accent-border"></div>
+      <div class="phone-body">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-header">
+            <div class="app-logo-sm">YER APP</div>
+            <div class="app-avatar"></div>
           </div>
-          <div class="outfit-title">The Power Edit</div>
+          <div class="app-greeting">Good morning,<strong>Today's Looks &#10022;</strong></div>
+          <div class="outfit-card">
+            <div class="outfit-label">&#10022; Today's Outfit</div>
+            <div class="outfit-preview">
+              <div class="outfit-item">&#128247;</div>
+              <div class="outfit-item">&#128160;</div>
+              <div class="outfit-item">&#128092;</div>
+            </div>
+            <div class="outfit-title">The Power Edit</div>
+          </div>
+          <div class="stats-row">
+            <div class="stat-card"><div class="stat-num">47</div><div class="stat-label">Items in Closet</div></div>
+            <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Outfits This Week</div></div>
+          </div>
+          <div class="trend-tag"><div class="trend-dot"></div>Trend Alert: Quiet Luxury</div>
         </div>
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-num">47</div><div class="stat-label">Items in Closet</div></div>
-          <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Outfits This Week</div></div>
-        </div>
-        <div class="trend-tag"><div class="trend-dot"></div>Trend Alert: Quiet Luxury</div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="gold-divider"></div>
+<!-- EDITORIAL DIVIDER -->
+<div class="ed-divider">
+  <div class="ed-divider-line"></div>
+  <div class="ed-divider-mark">No. 01 &mdash; The Problem</div>
+  <div class="ed-divider-line"></div>
+</div>
 
 <!-- PROBLEM -->
 <section class="section-problem">
-  <div class="section-label reveal">The struggle is real</div>
-  <h2 class="section-headline reveal">A closet full of clothes and nothing to wear.</h2>
+  <div class="problem-header">
+    <div class="problem-vol reveal">01</div>
+    <div class="problem-header-text">
+      <div class="section-tag reveal">The struggle is real</div>
+      <h2 class="reveal">A closet full<br>of clothes and<br><em>nothing to wear.</em></h2>
+    </div>
+  </div>
   <div class="problem-grid">
     <div class="problem-card reveal">
-      <div class="problem-num">01</div>
+      <div class="problem-num">01 &mdash; Wardrobe</div>
       <div class="problem-title">Wardrobe Chaos</div>
-      <p class="problem-body">You own it all but can't see it. Your best pieces are buried, forgotten, and unworn. While you reach for the same 10 items on repeat.</p>
+      <p class="problem-body">You own it all but can't see it. Your best pieces are buried, forgotten, and unworn &mdash; while you reach for the same 10 items on repeat.</p>
     </div>
     <div class="problem-card reveal">
-      <div class="problem-num">02</div>
+      <div class="problem-num">02 &mdash; Spending</div>
       <div class="problem-title">Wasted Purchases</div>
-      <p class="problem-body">Without a clear picture of your wardrobe, you overspend on items you already have or pieces that never complete a look.</p>
+      <p class="problem-body">Without a clear picture of your wardrobe, you overspend on items you already have &mdash; or pieces that never complete a look.</p>
     </div>
     <div class="problem-card reveal">
-      <div class="problem-num">03</div>
+      <div class="problem-num">03 &mdash; Decision</div>
       <div class="problem-title">Style Paralysis</div>
-      <p class="problem-body">Spending 20 minutes deciding every single morning. Planning outfits for events, seasons, or travel feels overwhelming. It shouldn't be this hard.</p>
+      <p class="problem-body">Spending 20 minutes deciding every single morning. Planning outfits for events, seasons, or travel feels overwhelming &mdash; it shouldn't be this hard.</p>
     </div>
   </div>
 </section>
 
-<div class="gold-divider"></div>
+<!-- EDITORIAL DIVIDER -->
+<div class="ed-divider" style="background:var(--black);">
+  <div class="ed-divider-line"></div>
+  <div class="ed-divider-mark">No. 02 &mdash; The Solution</div>
+  <div class="ed-divider-line"></div>
+</div>
 
 <!-- SOLUTION -->
 <section class="section-solution">
-  <div class="section-label reveal">The solution</div>
-  <h2 class="section-headline reveal">Everything your wardrobe has been missing.</h2>
-  <div class="solution-grid">
-    <ul class="features-list">
-      <li class="feature-item reveal">
-        <div class="feature-icon">◈</div>
-        <div><div class="feature-title">Closet Scan &amp; Inventory</div><p class="feature-desc">Upload your wardrobe via photos. <span class="yer-word">YER APP</span> catalogues every piece so you always know exactly what you own.</p></div>
-      </li>
-      <li class="feature-item reveal">
-        <div class="feature-icon">◈</div>
-        <div><div class="feature-title">AI Outfit Planning</div><p class="feature-desc">Daily and event-specific outfit suggestions built around your existing wardrobe and personal calendar.</p></div>
-      </li>
-      <li class="feature-item reveal">
-        <div class="feature-icon">◈</div>
-        <div><div class="feature-title">Capsule Wardrobe Guidance</div><p class="feature-desc">Know exactly what to keep, what to toss, and what single piece completes your entire wardrobe.</p></div>
-      </li>
-      <li class="feature-item reveal">
-        <div class="feature-icon">◈</div>
-        <div><div class="feature-title">Community &amp; Trend Feed</div><p class="feature-desc">Draw inspiration from a fashion-forward community. Get real-time trend alerts and seasonal updates.</p></div>
-      </li>
-      <li class="feature-item reveal">
-        <div class="feature-icon">◈</div>
-        <div><div class="feature-title">Smart Recommendations</div><p class="feature-desc"><span class="yer-word">YER APP</span> shows you the exact pieces missing from your wardrobe so every purchase is intentional.</p></div>
-      </li>
-    </ul>
-    <div class="reveal">
+  <div class="solution-inner">
+    <div class="solution-left">
+      <div class="section-tag reveal">The Solution</div>
+      <h2 class="solution-headline reveal">Everything<br>your wardrobe<br>has been<br><em>missing.</em></h2>
+      <ul class="features-list">
+        <li class="feature-item reveal">
+          <div class="feature-star">&#10022;</div>
+          <div>
+            <div class="feature-title">Closet Scan &amp; Inventory</div>
+            <p class="feature-desc">Upload your wardrobe via photos. <span class="yer-word">YER APP</span> catalogues every piece so you always know exactly what you own.</p>
+          </div>
+        </li>
+        <li class="feature-item reveal">
+          <div class="feature-star">&#10022;</div>
+          <div>
+            <div class="feature-title">AI Outfit Planning</div>
+            <p class="feature-desc">Daily and event-specific outfit suggestions built around your existing wardrobe and personal calendar.</p>
+          </div>
+        </li>
+        <li class="feature-item reveal">
+          <div class="feature-star">&#10022;</div>
+          <div>
+            <div class="feature-title">Capsule Wardrobe Guidance</div>
+            <p class="feature-desc">Know exactly what to keep, what to toss, and what single piece completes your entire wardrobe.</p>
+          </div>
+        </li>
+        <li class="feature-item reveal">
+          <div class="feature-star">&#10022;</div>
+          <div>
+            <div class="feature-title">Community &amp; Trend Feed</div>
+            <p class="feature-desc">Draw inspiration from a fashion-forward community. Get real-time trend alerts and seasonal updates.</p>
+          </div>
+        </li>
+        <li class="feature-item reveal">
+          <div class="feature-star">&#10022;</div>
+          <div>
+            <div class="feature-title">Smart Recommendations</div>
+            <p class="feature-desc"><span class="yer-word">YER APP</span> shows you the exact pieces missing from your wardrobe &mdash; so every purchase is intentional.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="solution-right" style="opacity:1;">
       <div class="phone-mockup-light">
-        <div style="position:absolute;inset:0;padding:44px 18px 18px;display:flex;flex-direction:column;gap:10px;">
-          <div style="text-align:center;font-family:'Glacial Indifference','Montserrat',sans-serif;font-size:14px;color:var(--gold);letter-spacing:3px;font-style:normal;">YER APP</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--muted);">Your Style Today</div>
-          <div style="background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.2);border-radius:12px;padding:12px;">
-            <div style="font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Community Picks ✦</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(201,169,110,0.15),rgba(232,213,196,0.05));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">👗</div>
-              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(232,213,196,0.1),rgba(201,169,110,0.08));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;">🧥</div>
+        <div style="position:absolute;inset:0;padding:40px 16px 16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(170deg,#1f0508,#0d0203);">
+          <div style="text-align:center;font-family:'Glacial Indifference','Montserrat',sans-serif;font-size:12px;color:#efdbbf;letter-spacing:4px;">YER APP</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:11px;font-style:italic;color:rgba(239,219,191,0.6);">Your Style Today</div>
+          <div style="background:rgba(104,24,31,0.25);border:1px solid rgba(104,24,31,0.45);border-radius:12px;padding:10px;">
+            <div style="font-size:7px;letter-spacing:3px;color:#cea707;text-transform:uppercase;margin-bottom:7px;">Community Picks &#10022;</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(104,24,31,0.35),rgba(206,167,7,0.07));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:22px;">&#128247;</div>
+              <div style="aspect-ratio:0.75;background:linear-gradient(135deg,rgba(206,167,7,0.08),rgba(104,24,31,0.25));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:22px;">&#129405;</div>
             </div>
           </div>
-          <div style="background:rgba(201,169,110,0.12);border-radius:8px;padding:10px;display:flex;align-items:center;gap:8px;">
-            <div style="font-size:16px;">🔔</div>
+          <div style="background:rgba(206,167,7,0.08);border-radius:8px;padding:9px;display:flex;align-items:center;gap:8px;">
+            <div style="font-size:14px;">&#128276;</div>
             <div>
-              <div style="font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;">Sale Alert</div>
-              <div style="font-size:10px;color:var(--muted);">Your wishlist items are 30% off</div>
+              <div style="font-size:8px;color:#cea707;letter-spacing:1px;text-transform:uppercase;">Sale Alert</div>
+              <div style="font-size:9px;color:rgba(239,219,191,0.6);">Wishlist items 30% off</div>
             </div>
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Quiet Luxury</span>
-            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Coastal Chic</span>
-            <span style="font-size:8px;padding:4px 10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:20px;color:var(--gold);letter-spacing:1px;">Power Dressing</span>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <span style="font-size:7px;padding:3px 8px;background:rgba(104,24,31,0.3);border:1px solid rgba(104,24,31,0.45);border-radius:20px;color:#efdbbf;letter-spacing:1px;">Quiet Luxury</span>
+            <span style="font-size:7px;padding:3px 8px;background:rgba(104,24,31,0.3);border:1px solid rgba(104,24,31,0.45);border-radius:20px;color:#efdbbf;letter-spacing:1px;">Coastal Chic</span>
+            <span style="font-size:7px;padding:3px 8px;background:rgba(206,167,7,0.12);border:1px solid rgba(206,167,7,0.3);border-radius:20px;color:#cea707;letter-spacing:1px;">Power Edit</span>
           </div>
         </div>
       </div>
@@ -520,85 +1006,159 @@
   </div>
 </section>
 
-<div class="gold-divider"></div>
-
 <!-- QUOTE -->
 <section class="section-quote">
-  <div class="quote-line"></div>
-  <p class="quote-text reveal">"Remember Cher's closet from <em>Clueless</em>?<br><span class="yer-word">YER APP</span> is exactly that, it's built and curated for <em>you.</em>"</p>
-  <div class="quote-line"></div>
-  <p class="quote-source reveal">Yvette Cruz · Founder, <span class="yer-word">YER APP</span></p>
+  <div class="quote-side-left">
+    <div class="quote-issue-label">YER APP &mdash; 2026 Collection</div>
+  </div>
+  <div class="quote-center">
+    <div class="quote-mark">&ldquo;</div>
+    <p class="quote-text reveal">
+      "Remember Cher's closet from <em>Clueless</em>?<br>
+      <span class="yer-word">YER APP</span> is exactly that,<br>
+      except it's built for <em>you.</em>"
+    </p>
+    <div class="quote-attribution reveal">
+      <div class="quote-rule"></div>
+      <div class="quote-source">Yvette Cruz &nbsp;&middot;&nbsp; Founder, <span class="yer-word">YER APP</span></div>
+    </div>
+  </div>
+  <div class="quote-side-right">
+    <p class="quote-aside">
+      "Style is a way to say who you are without having to speak."
+    </p>
+  </div>
 </section>
 
-<div class="gold-divider"></div>
+<!-- EDITORIAL DIVIDER -->
+<div class="ed-divider" style="background:var(--off-black);">
+  <div class="ed-divider-line"></div>
+  <div class="ed-divider-mark">No. 03 &mdash; How It Works</div>
+  <div class="ed-divider-line"></div>
+</div>
 
 <!-- HOW IT WORKS -->
 <section class="section-steps">
-  <div class="section-label reveal">How it works</div>
-  <h2 class="section-headline reveal">Style, simplified<br>in five steps.</h2>
+  <div class="steps-header">
+    <h2 class="reveal">Style,<br><em>simplified</em><br>in five steps.</h2>
+    <div class="steps-header-right reveal">
+      Stop staring at a full closet feeling like you have nothing to wear. <span class="yer-word">YER APP</span> is your personal AI stylist, outfit planner, and fashion community &mdash; all built around what you already own.
+    </div>
+  </div>
   <div class="steps-grid">
-    <div class="step-item reveal"><div class="step-circle">01</div><div class="step-title">Scan Your Closet</div><p class="step-desc">Upload your wardrobe with photos. <span class="yer-word">YER APP</span> organizes everything for you.</p></div>
-    <div class="step-item reveal"><div class="step-circle">02</div><div class="step-title">Plan Your Outfits</div><p class="step-desc">Get daily AI-powered looks based on your style and calendar.</p></div>
-    <div class="step-item reveal"><div class="step-circle">03</div><div class="step-title">Smart Recs</div><p class="step-desc">Discover the exact pieces your wardrobe is missing.</p></div>
-    <div class="step-item reveal"><div class="step-circle">04</div><div class="step-title">Join the Community</div><p class="step-desc">Explore, share, and get inspired by a fashion-forward feed.</p></div>
-    <div class="step-item reveal"><div class="step-circle">05</div><div class="step-title">Stay Season-Ready</div><p class="step-desc">Seasonal updates and trend alerts keep you always ahead.</p></div>
+    <div class="step-item reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Scan Your Closet</div>
+      <p class="step-desc">Upload your wardrobe with photos. <span class="yer-word">YER APP</span> organizes everything for you.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-num">02</div>
+      <div class="step-title">Plan Your Outfits</div>
+      <p class="step-desc">Get daily AI-powered looks based on your style and calendar.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-num">03</div>
+      <div class="step-title">Smart Recs</div>
+      <p class="step-desc">Discover the exact pieces your wardrobe is missing.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-num">04</div>
+      <div class="step-title">Join the Community</div>
+      <p class="step-desc">Explore, share, and get inspired by a fashion-forward feed.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-num">05</div>
+      <div class="step-title">Stay Season-Ready</div>
+      <p class="step-desc">Seasonal updates and trend alerts keep you always ahead.</p>
+    </div>
   </div>
 </section>
 
-<div class="gold-divider"></div>
-
 <!-- WAITLIST -->
 <section class="section-waitlist" id="waitlist">
-  <h2 class="waitlist-headline reveal">Be first.<br>Be styled.<br> Be <span class="yer-word">YER APP.</span></h2>
-  <p class="waitlist-sub reveal">Join the waitlist. Get exclusive early access and founding member perks.</p>
-  <div class="perks-row reveal">
-    <div class="perk"><div class="perk-icon">◈</div><span>Founding Member Status</span></div>
-    <div class="perk"><div class="perk-icon">✦</div><span>3 Months Free Premium</span></div>
-    <div class="perk"><div class="perk-icon">◇</div><span>First Access to Features</span></div>
+  <div class="waitlist-left">
+    <h2 class="waitlist-headline reveal">
+      Be first.<br>
+      Be styled.<br>
+      Be <em>YER APP.</em>
+    </h2>
+    <p class="waitlist-sub reveal">Join the waitlist. Get exclusive early access and founding member perks.</p>
   </div>
-  <div class="waitlist-form reveal" style="justify-content:center;">
-    <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="waitlist-btn" style="text-decoration:none; display:inline-block; padding: 20px 56px; font-size:12px;">Secure My Spot →</a>
+  <div class="waitlist-right">
+    <ul class="perks-list">
+      <li class="perk-item reveal">
+        <div class="perk-num">01</div>
+        <div>
+          <div class="perk-text">Founding Member Status</div>
+          <div class="perk-sub">Locked in for life. First in, always.</div>
+        </div>
+      </li>
+      <li class="perk-item reveal">
+        <div class="perk-num">02</div>
+        <div>
+          <div class="perk-text">3 Months Free Premium</div>
+          <div class="perk-sub">Full access, no charge, from day one.</div>
+        </div>
+      </li>
+      <li class="perk-item reveal">
+        <div class="perk-num">03</div>
+        <div>
+          <div class="perk-text">First Access to Features</div>
+          <div class="perk-sub">Shape the app before the world sees it.</div>
+        </div>
+      </li>
+    </ul>
+    <a href="https://yer-app.kit.com/0d71455d2a" target="_blank" class="waitlist-btn reveal">Secure My Spot &rarr;</a>
   </div>
-  <p class="waitlist-note reveal">You'll receive a confirmation email after signing up. No spam, ever.</p>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div>
-    <div class="footer-logo">YER APP</div>
-    <div class="footer-tagline">Your App. Your Style. Your Potential.</div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">YER APP</div>
+      <div class="footer-tagline">Your App. Your Style. Your Potential.</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://yvettecruz.my.canva.site/yerapp-com-privacy-policy" target="_blank" class="footer-link">Privacy Policy</a>
+      <a href="mailto:yer.app.ya@gmail.com" class="footer-link">Contact</a>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/yer_app" target="_blank">Instagram</a>
+      <a href="https://www.tiktok.com/@yer_app" target="_blank">TikTok</a>
+    </div>
   </div>
-  <div class="footer-links">
-    <a href="https://www.instagram.com/yer_app" target="_blank" class="footer-link">Instagram</a>
-    <a href="https://www.tiktok.com/@yer_app" target="_blank" class="footer-link">TikTok</a>
-    <a href="https://yvettecruz.my.canva.site/yerapp-com-privacy-policy" target="_blank" class="footer-link">Privacy</a>
-    <a href="mailto:yer.app.ya@gmail.com" class="footer-link">Contact</a>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 <span class="yer-word">YER APP</span>. All rights reserved.</div>
+    <div class="footer-copy">California, USA</div>
   </div>
-  <div class="footer-copy">© 2025 <span class="yer-word">YER APP</span>. All rights reserved.</div>
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', e => {
+  var cursor = document.getElementById('cursor');
+  var ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', function(e) {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
-    setTimeout(() => {
+    setTimeout(function() {
       ring.style.left = e.clientX + 'px';
       ring.style.top = e.clientY + 'px';
     }, 80);
   });
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        setTimeout(function() {
+          entry.target.classList.add('visible');
+        }, i * 100);
       }
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal, .reveal-fade').forEach(function(el) {
+    observer.observe(el);
+  });
 </script>
 </body>
 </html>
